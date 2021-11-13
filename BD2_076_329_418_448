@@ -1,5 +1,9 @@
 BD2_076_329_418_448
-Crime classification or Spam detection
+Crime classification 
+- Each crime is a single vector of size 9
+- The label or category is the second feature
+- 878k records in train and test dataset
+
 Crime classification: maybe through SVM or K means clustering or ensamble
-Spam Detection: Using Naive Bayes maybe
+
 
