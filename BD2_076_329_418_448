@@ -4,6 +4,6 @@ Crime classification
 - The label or category is the second feature
 - 878k records in train and test dataset
 
-Crime classification: maybe through SVM or K means clustering or ensamble
+Crime classification:knn, k means, naive bayes, ann
 
 
