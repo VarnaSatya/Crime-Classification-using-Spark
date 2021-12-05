@@ -1,0 +1,9 @@
+label_assign = {'fraud':1, 'suicide':2, 'sex offenses forcible':3, 'liquor laws':4, 
+'secondary codes':5, 'family offenses':6, 'missing person':7, 'other offenses':8, 
+'driving under the influence':9, 'warrants':10, 'arson':11, 'sex offenses non forcible':12,
+'forgery/counterfeiting':13, 'gambling':14, 'bribery':15, 'assault':16, 'drunkenness':17,
+'extortion':18, 'trea':19, 'weapon laws':20, 'loitering':21, 'suspicious occ':22, 
+'robbery':23, 'prostitution':24, 'embezzlement':25, 'bad checks':26, 'disorderly conduct':27,
+'runaway':28, 'recovered vehicle':29, 'vandalism':30,'drug/narcotic':31, 
+'pornography/obscene mat':32, 'trespass':33,'vehicle theft':34, 'non-criminal':35, 
+'stolen property':36, 'larceny/theft':37, 'kidnapping':38,'burglary':39,}
