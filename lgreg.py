@@ -62,7 +62,7 @@ data_df = transformed.withColumn("month", transformed["month"].cast(IntegerType(
 
 #making featurized vector
 
-hasher = VectorAssembler(inputCols=['pddis', 'dof','s[0]','s[1]','day','hour','minute','year'],
+hasher = VectorAssembler(inputCols=['pddis', 'dof','s[0]','s[1]'],
                        outputCol='features')
 
 featurized = hasher.transform(data_df)
