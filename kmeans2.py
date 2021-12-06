@@ -55,7 +55,7 @@ test = test.withColumn('Longitude', when(test.Longitude == np.nan,avg_long).othe
 a = avg(test.Longitude)
 vecAssembler = VectorAssembler(inputCols=["Latitude", "Longitude"], outputCol="features")
 new_df = vecAssembler.transform(test)
-kmeans = KMeans().setK(4).setSeed(1)
+kmeans = KMeans().setK(5).setSeed(1)
 model = kmeans.fit(new_df)
 predictions = model.transform(new_df)
 evaluator = ClusteringEvaluator()
@@ -69,6 +69,6 @@ q8_res = predictions.toPandas()
 
 fig, ax = plt.subplots()
 ax.scatter(q8_res['Longitude'], q8_res['Latitude'], c=(q8_res['prediction']),cmap=plt.cm.jet, alpha=0.9)
-ax.set_title("39 Clusters")
+ax.set_title("5 Clusters")
 plt.show()
 
