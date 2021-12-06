@@ -63,4 +63,12 @@ silhouette = evaluator.evaluate(predictions)
 print("Silhouette with squared euclidean distance = " + str(silhouette))
 
 
+plt.style.use('ggplot')
+
+q8_res = predictions.toPandas()
+
+fig, ax = plt.subplots()
+ax.scatter(q8_res['Longitude'], q8_res['Latitude'], c=(q8_res['prediction']),cmap=plt.cm.jet, alpha=0.9)
+ax.set_title("39 Clusters")
+plt.show()
 
