@@ -30,6 +30,7 @@ from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.sql import Row
 from collections import OrderedDict
+from mlp.py import mlp(df)
 
 def convert_to_row(d: dict) -> Row:
     return Row(**OrderedDict(sorted(d.items())))
@@ -40,7 +41,7 @@ from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.sql.session import SparkSession
 
-
+mlp_gs = MLPClassifier(max_iter=10)
 
 def preprocess(df):
     #categorical to numerical
