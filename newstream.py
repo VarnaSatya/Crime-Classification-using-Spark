@@ -42,6 +42,7 @@ from pyspark.streaming import StreamingContext
 from pyspark.sql.session import SparkSession
 
 mlp_gs = MLPClassifier(max_iter=10)
+clf = SGDClassifier(alpha=.0001, loss='log', penalty='l2', n_jobs=-1, shuffle=True, max_iter=100, verbose=0, tol=0.001)
 
 def preprocess(df):
     #categorical to numerical
