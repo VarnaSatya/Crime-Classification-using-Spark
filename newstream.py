@@ -41,6 +41,58 @@ from pyspark.streaming import StreamingContext
 from pyspark.sql.session import SparkSession
 
 
+
+def preprocess(df):
+    #categorical to numerical
+
+    indexers = [
+    StringIndexer(inputCol="Category", outputCol="label"),  
+    StringIndexer(inputCol="PdDistrict", outputCol="pddis"), 
+    StringIndexer(inputCol="DayOfWeek", outputCol="dof")]
+
+    pipeline = Pipeline(stages=indexers) 
+    indexed = pipeline.fit(df).transform(df) 
+
+    #normalize X and Y
+
+    vector_assembler = VectorAssembler(inputCols=['X','Y'], outputCol="SS_features")
+    indexed = vector_assembler.transform(indexed)
+    minmax_scaler = MinMaxScaler(inputCol="SS_features", outputCol="scaled")
+    scaled = minmax_scaler.fit(indexed).transform(indexed)
+    scaled=scaled.withColumn("s", vector_to_array("scaled")).select(['Dates','Category','pddis','dof','label']+[col("s")[i] for i in range(2)])
+
+    #splitting date
+
+    transformed = (scaled
+        .withColumn("day", dayofmonth(col("Dates")))
+        .withColumn("month", date_format(col("Dates"), "MM"))
+        .withColumn("year", year(col("Dates")))
+        .withColumn('second',second(df.Dates))
+        .withColumn('minute',minute(df.Dates))
+        .withColumn('hour',hour(df.Dates))
+        )
+
+    from pyspark.sql.types import IntegerType
+    data_df = transformed.withColumn("month", transformed["month"].cast(IntegerType()))
+
+    #making featurized vector
+
+    #['Dates','pddis', 'dof','s[0]','s[1]','day','hour','minute','year']
+
+    #columns with the most correlation with label
+    data_df=data_df.select('pddis','s[0]','s[1]','hour','minute','year','label')
+
+    #encode label with dictionary values
+
+    hasher = FeatureHasher(inputCols=['pddis','s[0]','s[1]','hour','minute','year'],
+                        outputCol="features")
+
+    featurized = hasher.transform(data_df)
+
+    return featurized
+
+
+
 sc=SparkContext('local[2]',appName="crime")
 ss=SparkSession(sc)
   
@@ -61,7 +113,9 @@ def j(rdd):
         #print(d)
         dictList= lambda x: d[x]
         df=sc.parallelize(list(map(dictList,d))).map(convert_to_row).toDF(['Dates','Category','Descript','DayOfWeek','PdDistrict','Resolution','Address','X','Y'])  
-        df.show()
+        #df.show()
+        df1=preprocess(df)
+        df1.show()
 
     
     
